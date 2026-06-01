@@ -1,0 +1,162 @@
+<!DOCTYPE html><html lang="en" data-layout="default"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="I am a first-year Ph.D. student in Economics at the University of Pennsylvania. I received my B.Econ. in Finance (Financial Economics) and B.S. in Mathematics from Peking University."><meta name="generator" content="Astro v6.4.2"><meta name="site-version" content="e42d68d009aa520692b588f45a4c10250c3b71d7"><link rel="icon" type="image/png" href="/images/favicon.png?v=e42d68d009aa520692b588f45a4c10250c3b71d7"><link rel="apple-touch-icon" href="/images/favicon.png?v=e42d68d009aa520692b588f45a4c10250c3b71d7"><title>Penghuan Yan - Ph.D. Student, Department of Economics</title><script>(function(){const darkLabel = "Switch to dark mode";
+const lightLabel = "Switch to light mode";
+
+      (() => {
+        const storageKey = "site-theme";
+        const root = document.documentElement;
+
+        const getStoredTheme = () => {
+          try {
+            return localStorage.getItem(storageKey);
+          } catch {
+            return null;
+          }
+        };
+
+        const setStoredTheme = (theme) => {
+          try {
+            localStorage.setItem(storageKey, theme);
+          } catch {}
+        };
+
+        const applyTheme = (theme) => {
+          const nextTheme = theme === "dark" ? "dark" : "light";
+          root.dataset.theme = nextTheme;
+
+          document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+            const isDark = nextTheme === "dark";
+            button.setAttribute("aria-pressed", String(isDark));
+            button.setAttribute("aria-label", isDark ? lightLabel : darkLabel);
+          });
+        };
+
+        applyTheme(getStoredTheme() ?? "light");
+
+        const bindThemeToggle = () => {
+          applyTheme(getStoredTheme() ?? root.dataset.theme ?? "light");
+          document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+            button.addEventListener("click", () => {
+              const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+              setStoredTheme(nextTheme);
+              applyTheme(nextTheme);
+            });
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", bindThemeToggle, { once: true });
+        } else {
+          bindThemeToggle();
+        }
+      })();
+    })();</script><script>
+      (() => {
+        const root = document.documentElement;
+
+        const setMenuOpen = (open) => {
+          root.dataset.menuOpen = open ? "true" : "false";
+          document.body.style.overflow = open ? "hidden" : "";
+
+          document.querySelectorAll("[data-menu-toggle]").forEach((button) => {
+            button.setAttribute("aria-expanded", String(open));
+          });
+
+          document.querySelectorAll("[data-mobile-menu]").forEach((menu) => {
+            menu.setAttribute("aria-hidden", String(!open));
+          });
+
+          document.querySelectorAll("[data-menu-backdrop]").forEach((backdrop) => {
+            backdrop.hidden = !open;
+          });
+        };
+
+        const bindMenu = () => {
+          setMenuOpen(false);
+
+          document.querySelectorAll("[data-menu-toggle]").forEach((button) => {
+            button.addEventListener("click", () => {
+              setMenuOpen(root.dataset.menuOpen !== "true");
+            });
+          });
+
+          document.querySelectorAll("[data-menu-close]").forEach((item) => {
+            item.addEventListener("click", () => setMenuOpen(false));
+          });
+
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") setMenuOpen(false);
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", bindMenu, { once: true });
+        } else {
+          bindMenu();
+        }
+      })();
+    </script><script>(function(){const siteVersion = "e42d68d009aa520692b588f45a4c10250c3b71d7";
+
+      (() => {
+        if (siteVersion === "local-dev") return;
+
+        const versionUrl = `/site-version.json?ts=${Date.now()}`;
+
+        fetch(versionUrl, { cache: "no-store" })
+          .then((response) => (response.ok ? response.json() : null))
+          .then((data) => {
+            const latest = data && data.version;
+            if (!latest || latest === siteVersion) return;
+
+            const reloadKey = `site-version-reload:${latest}`;
+            if (sessionStorage.getItem(reloadKey)) return;
+
+            sessionStorage.setItem(reloadKey, "1");
+            const nextUrl = new URL(window.location.href);
+            nextUrl.searchParams.set("v", String(latest).slice(0, 12));
+            window.location.replace(nextUrl.toString());
+          })
+          .catch(() => {});
+      })();
+    })();</script><script>
+      (() => {
+        const formatUpdatedTime = () => {
+          const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+          document.querySelectorAll("[data-build-timestamp]").forEach((node) => {
+            const timestamp = node.getAttribute("data-build-timestamp");
+            if (!timestamp) return;
+
+            const date = new Date(timestamp);
+            const pageLocale = document.documentElement.lang?.toLowerCase().startsWith("zh") ? "zh-CN" : "en-US";
+            const timeZone = browserTimeZone || "Asia/Shanghai";
+
+            try {
+              const dateTime = new Intl.DateTimeFormat(pageLocale, {
+                timeZone,
+                year: "numeric",
+                month: pageLocale === "zh-CN" ? "numeric" : "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+              }).format(date);
+              const zoneName = new Intl.DateTimeFormat("en-US", {
+                timeZone,
+                timeZoneName: "short",
+              }).formatToParts(date).find((part) => part.type === "timeZoneName")?.value;
+
+              node.textContent = zoneName ? `${dateTime} ${zoneName}` : dateTime;
+            } catch {}
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", formatUpdatedTime, { once: true });
+        } else {
+          formatUpdatedTime();
+        }
+      })();
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.gi9dx5BN.css"></head> <body> <div class="site-shell"> <header class="site-header"> <nav class="site-nav" aria-label="Primary navigation"> <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle> <span aria-hidden="true"></span> <span aria-hidden="true"></span> <span aria-hidden="true"></span> </button> <a class="brand" href="#home"> <span>Penghuan Yan</span> </a> <div class="nav-links"><a href="#home">Home</a><a href="#research">Research</a><a href="#education">Education</a><a href="/files/penghuan-yan-cv.pdf">CV</a></div> <div class="site-controls" aria-label="Site controls"> <a class="nav-action" href="/zh/" aria-label="Switch to Chinese"> <span aria-hidden="true">中</span> </a> <button class="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false" data-theme-toggle> <span class="theme-icon" aria-hidden="true"></span> </button> <a class="nav-action toolbox-action" href="/tools/" aria-label="Open toolbox" title="Toolbox"> <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"> <path d="M9 7V6.2C9 5.5 9.5 5 10.2 5h3.6c.7 0 1.2.5 1.2 1.2V7"></path> <path d="M5.8 8h12.4c.7 0 1.3.6 1.3 1.3v7.4c0 .7-.6 1.3-1.3 1.3H5.8c-.7 0-1.3-.6-1.3-1.3V9.3C4.5 8.6 5.1 8 5.8 8Z"></path> <path d="M4.5 12h15"></path> <path d="M10 12v1.1h4V12"></path> </svg> </a> </div> </nav> </header>  <button class="mobile-menu-backdrop" type="button" data-menu-backdrop data-menu-close hidden></button> <aside class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" aria-hidden="true" data-mobile-menu> <div class="mobile-menu-head"> <span>Penghuan Yan</span> <button class="menu-close" type="button" aria-label="Close navigation menu" data-menu-close> <span aria-hidden="true"></span> <span aria-hidden="true"></span> </button> </div> <nav class="mobile-menu-links" aria-label="Mobile navigation"> <a href="#home" data-menu-close>Home</a><a href="#research" data-menu-close>Research</a><a href="#education" data-menu-close>Education</a><a href="/files/penghuan-yan-cv.pdf" data-menu-close>CV</a> </nav> </aside>  <main class="main-content">  <section class="academic-hero" id="home"> <div class="portrait-frame"> <img src="/images/profile-penghuan-yan.jpg" alt="Portrait of Penghuan Yan"> </div> <div class="hero-profile">  <h1>Penghuan Yan</h1> <p class="hero-name-cn"> <span>阎芃寰</span> <span class="name-reading">Yán Pénghuán · [jɛn˧˥.pʰəŋ˧˥.xwan˧˥]</span> </p> <p class="hero-affiliation">University of Pennsylvania</p> <p class="hero-title">Ph.D. Student, Department of Economics</p> <div class="hero-email"> <span>Email</span> <button class="email-copy" type="button" data-copy-email="yanph@sas.upenn.edu" data-copy-done="Copied" data-copy-failed="Copy failed" aria-label="Copy email address: yanph@sas.upenn.edu" title="Copy email address"> <span class="email-text">yanph@sas.upenn.edu</span> <span class="copy-status" aria-live="polite" data-copy-status> Click to copy </span> </button> </div> <div class="markdown-body hero-bio"> <p>I am a first-year Ph.D. student in Economics at the <strong>University of Pennsylvania</strong>. I received my <strong>B.Econ. in Finance (Financial Economics)</strong> and <strong>B.S. in Mathematics</strong> from <strong>Peking University</strong>.</p>
+<p>My research interests lie in <strong>microeconomic theory</strong>, mainly <strong>information economics</strong> and <strong>mechanism design</strong>.</p> </div> <div class="profile-actions" aria-label="Profile links"> <a class="button" href="/files/penghuan-yan-cv.pdf"> CV </a> </div> </div> </section> <div class="page-divider" aria-hidden="true"></div> <section class="academic-section" id="research"> <h2 class="section-title">Research</h2> <div class="paper-list">  </div> </section> <div class="page-divider" aria-hidden="true"></div> <section class="academic-section" id="education"> <h2 class="section-title">Education</h2> <div class="timeline-list"> <article class="timeline-entry"> <div class="timeline-time">Aug. 2025 - Present</div> <div class="timeline-copy"> <h3>University of Pennsylvania</h3> <p class="timeline-program">Ph.D. student in Economics</p> <p class="timeline-location">Philadelphia, PA, USA</p> <div class="markdown-body">  </div> </div> </article><article class="timeline-entry"> <div class="timeline-time">Jan. 2024 - May 2024</div> <div class="timeline-copy"> <h3>University of California, Berkeley</h3> <p class="timeline-program">Visiting student</p> <p class="timeline-location">Berkeley, CA, USA</p> <div class="markdown-body">  </div> </div> </article><article class="timeline-entry"> <div class="timeline-time">Sep. 2021 - Jul. 2025</div> <div class="timeline-copy"> <h3>Peking University, Guanghua School of Management</h3> <p class="timeline-program">B.Econ. in Finance (Financial Economics); B.S. in Mathematics</p> <p class="timeline-location">Beijing, China</p> <div class="markdown-body">  </div> </div> </article> </div> </section> <script type="module">(()=>{const i=async t=>{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(t);return}const e=document.createElement("textarea");e.value=t,e.setAttribute("readonly",""),e.style.position="fixed",e.style.opacity="0",document.body.appendChild(e),e.select(),document.execCommand("copy"),e.remove()},n=()=>{document.querySelectorAll("[data-copy-email]").forEach(t=>{if(!(t instanceof HTMLButtonElement)||t.dataset.copyBound==="true")return;t.dataset.copyBound="true";const e=t.querySelector("[data-copy-status]"),a=e?.textContent??"";let o;t.addEventListener("click",async()=>{const c=t.dataset.copyEmail;if(c){try{await i(c),e&&(e.textContent=t.dataset.copyDone??a)}catch{e&&(e.textContent=t.dataset.copyFailed??a)}o&&window.clearTimeout(o),o=window.setTimeout(()=>{e&&(e.textContent=a)},1800)}})})};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",n,{once:!0}):n()})();</script>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <div class="footer-identity"> <p class="footer-line"> <strong>Penghuan Yan</strong> <span class="footer-separator" aria-hidden="true">·</span> <span>Department of Economics, University of Pennsylvania</span> </p> <p class="footer-line"> <span>yanph@sas.upenn.edu</span>  <span class="footer-separator" aria-hidden="true">·</span> <span>Philadelphia, PA, USA</span>  </p> </div> <p class="footer-meta">
+© 2026 Penghuan Yan · Last updated: June 1, 2026 </p> </div> </footer> </div> </body></html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html><html lang="zh-CN" data-layout="simple"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Egamad 的网页工具箱。"><meta name="generator" content="Astro v6.4.2"><meta name="site-version" content="e42d68d009aa520692b588f45a4c10250c3b71d7"><link rel="icon" type="image/png" href="/images/favicon.png?v=e42d68d009aa520692b588f45a4c10250c3b71d7"><link rel="apple-touch-icon" href="/images/favicon.png?v=e42d68d009aa520692b588f45a4c10250c3b71d7"><title>工具箱 - Egamad</title><script>(function(){const darkLabel = "切换到深色模式";
+const lightLabel = "切换到浅色模式";
+
+      (() => {
+        const storageKey = "site-theme";
+        const root = document.documentElement;
+
+        const getStoredTheme = () => {
+          try {
+            return localStorage.getItem(storageKey);
+          } catch {
+            return null;
+          }
+        };
+
+        const setStoredTheme = (theme) => {
+          try {
+            localStorage.setItem(storageKey, theme);
+          } catch {}
+        };
+
+        const applyTheme = (theme) => {
+          const nextTheme = theme === "dark" ? "dark" : "light";
+          root.dataset.theme = nextTheme;
+
+          document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+            const isDark = nextTheme === "dark";
+            button.setAttribute("aria-pressed", String(isDark));
+            button.setAttribute("aria-label", isDark ? lightLabel : darkLabel);
+          });
+        };
+
+        applyTheme(getStoredTheme() ?? "light");
+
+        const bindThemeToggle = () => {
+          applyTheme(getStoredTheme() ?? root.dataset.theme ?? "light");
+          document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+            button.addEventListener("click", () => {
+              const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+              setStoredTheme(nextTheme);
+              applyTheme(nextTheme);
+            });
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", bindThemeToggle, { once: true });
+        } else {
+          bindThemeToggle();
+        }
+      })();
+    })();</script><script>
+      (() => {
+        const root = document.documentElement;
+
+        const setMenuOpen = (open) => {
+          root.dataset.menuOpen = open ? "true" : "false";
+          document.body.style.overflow = open ? "hidden" : "";
+
+          document.querySelectorAll("[data-menu-toggle]").forEach((button) => {
+            button.setAttribute("aria-expanded", String(open));
+          });
+
+          document.querySelectorAll("[data-mobile-menu]").forEach((menu) => {
+            menu.setAttribute("aria-hidden", String(!open));
+          });
+
+          document.querySelectorAll("[data-menu-backdrop]").forEach((backdrop) => {
+            backdrop.hidden = !open;
+          });
+        };
+
+        const bindMenu = () => {
+          setMenuOpen(false);
+
+          document.querySelectorAll("[data-menu-toggle]").forEach((button) => {
+            button.addEventListener("click", () => {
+              setMenuOpen(root.dataset.menuOpen !== "true");
+            });
+          });
+
+          document.querySelectorAll("[data-menu-close]").forEach((item) => {
+            item.addEventListener("click", () => setMenuOpen(false));
+          });
+
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") setMenuOpen(false);
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", bindMenu, { once: true });
+        } else {
+          bindMenu();
+        }
+      })();
+    </script><script>(function(){const siteVersion = "e42d68d009aa520692b588f45a4c10250c3b71d7";
+
+      (() => {
+        if (siteVersion === "local-dev") return;
+
+        const versionUrl = `/site-version.json?ts=${Date.now()}`;
+
+        fetch(versionUrl, { cache: "no-store" })
+          .then((response) => (response.ok ? response.json() : null))
+          .then((data) => {
+            const latest = data && data.version;
+            if (!latest || latest === siteVersion) return;
+
+            const reloadKey = `site-version-reload:${latest}`;
+            if (sessionStorage.getItem(reloadKey)) return;
+
+            sessionStorage.setItem(reloadKey, "1");
+            const nextUrl = new URL(window.location.href);
+            nextUrl.searchParams.set("v", String(latest).slice(0, 12));
+            window.location.replace(nextUrl.toString());
+          })
+          .catch(() => {});
+      })();
+    })();</script><script>
+      (() => {
+        const formatUpdatedTime = () => {
+          const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+          document.querySelectorAll("[data-build-timestamp]").forEach((node) => {
+            const timestamp = node.getAttribute("data-build-timestamp");
+            if (!timestamp) return;
+
+            const date = new Date(timestamp);
+            const pageLocale = document.documentElement.lang?.toLowerCase().startsWith("zh") ? "zh-CN" : "en-US";
+            const timeZone = browserTimeZone || "Asia/Shanghai";
+
+            try {
+              const dateTime = new Intl.DateTimeFormat(pageLocale, {
+                timeZone,
+                year: "numeric",
+                month: pageLocale === "zh-CN" ? "numeric" : "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+              }).format(date);
+              const zoneName = new Intl.DateTimeFormat("en-US", {
+                timeZone,
+                timeZoneName: "short",
+              }).formatToParts(date).find((part) => part.type === "timeZoneName")?.value;
+
+              node.textContent = zoneName ? `${dateTime} ${zoneName}` : dateTime;
+            } catch {}
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", formatUpdatedTime, { once: true });
+        } else {
+          formatUpdatedTime();
+        }
+      })();
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.gi9dx5BN.css"></head> <body> <div class="site-shell"> <header class="site-header"> <nav class="site-nav" aria-label="Primary navigation">  <a class="brand" href="/tools/"> <span>工具箱</span> </a>  <div class="site-controls" aria-label="站点控制">  <button class="theme-toggle" type="button" aria-label="切换深色模式" aria-pressed="false" data-theme-toggle> <span class="theme-icon" aria-hidden="true"></span> </button>  </div> </nav> </header>  <main class="main-content">  <section class="toolbox-page"> <div class="toolbox-hero"> <p class="toolbox-kicker">Toolbox</p> <h1>工具箱</h1>  </div> <div class="toolbox-categories"> <section class="toolbox-category" aria-labelledby="category-tools" data-tool-category> <div class="toolbox-category-head"> <div class="toolbox-category-title"> <h2 id="category-tools">工具</h2>  </div> <div class="tool-sort-control"> <label class="tool-sort-label" for="tool-sort-tools">排序</label> <div class="tool-sort-select-wrap"> <select class="tool-sort-select" id="tool-sort-tools" aria-label="工具排序方式" data-tool-sort-select> <option value="order">默认</option> <option value="title">名称</option> <option value="created">创建时间</option> <option value="updated">修改时间</option> </select> </div> </div> </div> <div class="tool-card-grid" data-tool-card-grid> <a class="tool-card" href="/tools/xuan-shu/" data-tool-card data-order="1" data-title="玄枢存储" data-created-time="1780295400000" data-updated-time="1780311300000"> <div class="tool-card-main"> <div class="tool-card-icon" aria-hidden="true"> <span>玄</span> </div> <div class="tool-card-copy"> <h3>玄枢存储</h3> <p>管理八字与六爻记录，并查看父子关联。</p> </div> </div> <div class="tool-tags" aria-label="标签"> <span>八字</span><span>六爻</span><span>排盘</span> </div> </a><a class="tool-card" href="/tools/blank/page-2/" data-tool-card data-order="1" data-title="页面2" data-created-time="1780152969000" data-updated-time="1780152969000"> <div class="tool-card-main"> <div class="tool-card-icon" aria-hidden="true"> <span>页</span> </div> <div class="tool-card-copy"> <h3>页面2</h3> <p>进入空白工具的页面2。</p> </div> </div>  </a><a class="tool-card" href="/tools/xuan-shu/bazi/" data-tool-card data-order="2" data-title="八字排盘" data-created-time="1780295400000" data-updated-time="1780311300000"> <div class="tool-card-main"> <div class="tool-card-icon" aria-hidden="true"> <span>八</span> </div> <div class="tool-card-copy"> <h3>八字排盘</h3> <p>输入生日时辰，输出四柱、藏干十神、大运流年等模块化细盘。</p> </div> </div> <div class="tool-tags" aria-label="标签"> <span>八字</span><span>六爻</span><span>排盘</span> </div> </a><a class="tool-card" href="/tools/blank/page-1/" data-tool-card data-order="2" data-title="页面1" data-created-time="1780152969000" data-updated-time="1780152969000"> <div class="tool-card-main"> <div class="tool-card-icon" aria-hidden="true"> <span>页</span> </div> <div class="tool-card-copy"> <h3>页面1</h3> <p>进入空白工具的页面1。</p> </div> </div>  </a><a class="tool-card" href="/tools/blank/" data-tool-card data-order="3" data-title="空白" data-created-time="1780152969000" data-updated-time="1780152969000"> <div class="tool-card-main"> <div class="tool-card-icon" aria-hidden="true"> <span>空</span> </div> <div class="tool-card-copy"> <h3>空白</h3> <p>进入空白工具首页。</p> </div> </div>  </a><a class="tool-card" href="/tools/xuan-shu/liuyao/" data-tool-card data-order="3" data-title="六爻排盘" data-created-time="1780295400000" data-updated-time="1780311300000"> <div class="tool-card-main"> <div class="tool-card-icon" aria-hidden="true"> <span>六</span> </div> <div class="tool-card-copy"> <h3>六爻排盘</h3> <p>六个按钮录入爻象，输出本卦、变卦、六神、六亲、伏神和旬空。</p> </div> </div> <div class="tool-tags" aria-label="标签"> <span>八字</span><span>六爻</span><span>排盘</span> </div> </a><a class="tool-card" href="/tools/xuan-shu/settings/" data-tool-card data-order="4" data-title="玄枢设置" data-created-time="1780295400000" data-updated-time="1780311300000"> <div class="tool-card-main"> <div class="tool-card-icon" aria-hidden="true"> <span>玄</span> </div> <div class="tool-card-copy"> <h3>玄枢设置</h3> <p>配置五行颜色、阴阳字体、六爻显示模式、账号登录与同步。</p> </div> </div> <div class="tool-tags" aria-label="标签"> <span>八字</span><span>六爻</span><span>排盘</span> </div> </a> </div> </section><section class="toolbox-category" aria-labelledby="category-games" data-tool-category> <div class="toolbox-category-head"> <div class="toolbox-category-title"> <h2 id="category-games">游戏</h2>  </div>  </div> <p class="toolbox-empty">空</p> </section> </div> </section> <script>
+    (() => {
+      const compareTitles = (first, second) =>
+        first.localeCompare(second, "zh-CN", {
+          numeric: true,
+          sensitivity: "base",
+        });
+
+      document.querySelectorAll("[data-tool-category]").forEach((category) => {
+        const grid = category.querySelector("[data-tool-card-grid]");
+        const select = category.querySelector("[data-tool-sort-select]");
+
+        if (!(select instanceof HTMLSelectElement)) return;
+
+        const getCards = () => Array.from(grid?.querySelectorAll("[data-tool-card]") ?? []);
+
+        const sortCards = (mode) => {
+          if (!grid) return;
+
+          const cards = getCards();
+          if (cards.length < 2) return;
+
+          const firstPositions = new Map(cards.map((card) => [card, card.getBoundingClientRect()]));
+          const sortedCards = [...cards].sort((first, second) => {
+            const firstTitle = first.dataset.title ?? "";
+            const secondTitle = second.dataset.title ?? "";
+            const firstOrder = Number(first.dataset.order ?? 0);
+            const secondOrder = Number(second.dataset.order ?? 0);
+
+            if (mode === "title") {
+              const titleResult = compareTitles(firstTitle, secondTitle);
+              if (titleResult !== 0) return titleResult;
+            }
+
+            if (mode === "created" || mode === "updated") {
+              const key = mode === "created" ? "createdTime" : "updatedTime";
+              const firstTime = Number(first.dataset[key] ?? 0);
+              const secondTime = Number(second.dataset[key] ?? 0);
+              const timeResult = firstTime - secondTime;
+              if (timeResult !== 0) return timeResult;
+            }
+
+            const orderResult = firstOrder - secondOrder;
+            if (orderResult !== 0) return orderResult;
+
+            return compareTitles(firstTitle, secondTitle);
+          });
+
+          sortedCards.forEach((card) => grid.appendChild(card));
+
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+          sortedCards.forEach((card) => {
+            const first = firstPositions.get(card);
+            if (!first) return;
+
+            const last = card.getBoundingClientRect();
+            const deltaX = first.left - last.left;
+            const deltaY = first.top - last.top;
+
+            if (deltaX === 0 && deltaY === 0) return;
+
+            card.animate(
+              [
+                {
+                  transform: `translate(${deltaX}px, ${deltaY}px)`,
+                  opacity: 0.92,
+                },
+                {
+                  transform: "translate(0, 0)",
+                  opacity: 1,
+                },
+              ],
+              {
+                duration: 280,
+                easing: "cubic-bezier(0.2, 0, 0, 1)",
+              },
+            );
+          });
+        };
+
+        select.addEventListener("change", () => {
+          sortCards(select.value);
+        });
+      });
+    })();
+  </script>  </main> <footer class="site-footer site-footer-meta-only"> <div class="site-footer-inner">  <p class="footer-meta">
+© 2026 Egamad · 最后更新: <span data-build-timestamp="2026-06-01T11:18:39.586Z">2026/6/1 19:18:39 GMT+8</span> </p> </div> </footer> </div> </body></html>
