@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="en" data-layout="default"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="I am a first-year Ph.D. student in Economics at the University of Pennsylvania. I received my B.Econ. in Finance (Financial Economics) and B.S. in Mathematics from Peking University."><meta name="generator" content="Astro v6.4.2"><meta name="site-version" content="12054834e69eca83f6e524bc5af99f239e51ce1f"><link rel="icon" type="image/png" href="/images/favicon.png?v=12054834e69eca83f6e524bc5af99f239e51ce1f"><link rel="apple-touch-icon" href="/images/favicon.png?v=12054834e69eca83f6e524bc5af99f239e51ce1f"><title>Penghuan Yan - Ph.D. Student, Department of Economics</title><script>
+      (() => {
+        const root = document.documentElement;
+        root.dataset.headerBooting = "true";
+
+        const clearHeaderBooting = () => {
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+              delete root.dataset.headerBooting;
+            });
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", clearHeaderBooting, { once: true });
+        } else {
+          clearHeaderBooting();
+        }
+      })();
+    </script><script>(function(){const darkLabel = "Switch to dark mode";
+const lightLabel = "Switch to light mode";
+
+      (() => {
+        const storageKey = "site-theme";
+        const root = document.documentElement;
+
+        const getStoredTheme = () => {
+          try {
+            return localStorage.getItem(storageKey);
+          } catch {
+            return null;
+          }
+        };
+
+        const setStoredTheme = (theme) => {
+          try {
+            localStorage.setItem(storageKey, theme);
+          } catch {}
+        };
+
+        let themeTransitionReset = 0;
+
+        const withoutThemeTransition = (callback) => {
+          root.dataset.themeChanging = "true";
+          callback();
+          window.cancelAnimationFrame(themeTransitionReset);
+          themeTransitionReset = window.requestAnimationFrame(() => {
+            themeTransitionReset = window.requestAnimationFrame(() => {
+              delete root.dataset.themeChanging;
+            });
+          });
+        };
+
+        const applyTheme = (theme, options = {}) => {
+          const nextTheme = theme === "dark" ? "dark" : "light";
+          const commitTheme = () => {
+            root.dataset.theme = nextTheme;
+
+            document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+              const isDark = nextTheme === "dark";
+              button.setAttribute("aria-pressed", String(isDark));
+              button.setAttribute("aria-label", isDark ? lightLabel : darkLabel);
+            });
+          };
+
+          if (options.instant) {
+            withoutThemeTransition(commitTheme);
+          } else {
+            commitTheme();
+          }
+        };
+
+        applyTheme(getStoredTheme() ?? "light");
+
+        const bindThemeToggle = () => {
+          applyTheme(getStoredTheme() ?? root.dataset.theme ?? "light");
+          document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+            button.addEventListener("click", () => {
+              const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+              setStoredTheme(nextTheme);
+              applyTheme(nextTheme, { instant: true });
+            });
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", bindThemeToggle, { once: true });
+        } else {
+          bindThemeToggle();
+        }
+      })();
+    })();</script><script>
+      (() => {
+        const root = document.documentElement;
+
+        const setMenuOpen = (open) => {
+          root.dataset.menuOpen = open ? "true" : "false";
+          document.body.style.overflow = open ? "hidden" : "";
+
+          document.querySelectorAll("[data-menu-toggle]").forEach((button) => {
+            button.setAttribute("aria-expanded", String(open));
+          });
+
+          document.querySelectorAll("[data-mobile-menu]").forEach((menu) => {
+            menu.setAttribute("aria-hidden", String(!open));
+          });
+
+          document.querySelectorAll("[data-menu-backdrop]").forEach((backdrop) => {
+            backdrop.hidden = !open;
+          });
+        };
+
+        const bindMenu = () => {
+          setMenuOpen(false);
+
+          document.querySelectorAll("[data-menu-toggle]").forEach((button) => {
+            button.addEventListener("click", () => {
+              setMenuOpen(root.dataset.menuOpen !== "true");
+            });
+          });
+
+          document.querySelectorAll("[data-menu-close]").forEach((item) => {
+            item.addEventListener("click", () => setMenuOpen(false));
+          });
+
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") setMenuOpen(false);
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", bindMenu, { once: true });
+        } else {
+          bindMenu();
+        }
+      })();
+    </script><script>(function(){const siteVersion = "12054834e69eca83f6e524bc5af99f239e51ce1f";
+
+      (() => {
+        if (siteVersion === "local-dev") return;
+
+        const versionUrl = `/site-version.json?ts=${Date.now()}`;
+
+        fetch(versionUrl, { cache: "no-store" })
+          .then((response) => (response.ok ? response.json() : null))
+          .then((data) => {
+            const latest = data && data.version;
+            if (!latest || latest === siteVersion) return;
+
+            const reloadKey = `site-version-reload:${latest}`;
+            if (sessionStorage.getItem(reloadKey)) return;
+
+            sessionStorage.setItem(reloadKey, "1");
+            const nextUrl = new URL(window.location.href);
+            nextUrl.searchParams.set("v", String(latest).slice(0, 12));
+            window.location.replace(nextUrl.toString());
+          })
+          .catch(() => {});
+      })();
+    })();</script><script>
+      (() => {
+        const formatUpdatedTime = () => {
+          const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+          document.querySelectorAll("[data-build-timestamp]").forEach((node) => {
+            const timestamp = node.getAttribute("data-build-timestamp");
+            if (!timestamp) return;
+
+            const date = new Date(timestamp);
+            const pageLocale = document.documentElement.lang?.toLowerCase().startsWith("zh") ? "zh-CN" : "en-US";
+            const timeZone = browserTimeZone || "Asia/Shanghai";
+
+            try {
+              const dateTime = new Intl.DateTimeFormat(pageLocale, {
+                timeZone,
+                year: "numeric",
+                month: pageLocale === "zh-CN" ? "numeric" : "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+              }).format(date);
+              const zoneName = new Intl.DateTimeFormat("en-US", {
+                timeZone,
+                timeZoneName: "short",
+              }).formatToParts(date).find((part) => part.type === "timeZoneName")?.value;
+
+              node.textContent = zoneName ? `${dateTime} ${zoneName}` : dateTime;
+            } catch {}
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", formatUpdatedTime, { once: true });
+        } else {
+          formatUpdatedTime();
+        }
+      })();
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DNlfDnOT.css"></head> <body> <div class="site-shell"> <header class="site-header"> <nav class="site-nav" aria-label="Primary navigation"> <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle> <span aria-hidden="true"></span> <span aria-hidden="true"></span> <span aria-hidden="true"></span> </button> <span class="tool-header-leading-slot" data-tool-header-leading data-empty="true">  </span> <a class="brand" href="#home"> <span>Penghuan Yan</span> </a> <div class="nav-links"><a href="#home">Home</a><a href="#research">Research</a><a href="#education">Education</a><a href="/files/penghuan-yan-cv.pdf">CV</a></div> <div class="site-controls" aria-label="Site controls"> <span class="tool-header-actions-slot" data-tool-header-actions data-empty="true">   </span> <a class="nav-action" href="/zh/" aria-label="Switch to Chinese"> <span aria-hidden="true">中</span> </a> <button class="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false" data-theme-toggle> <span class="theme-icon" aria-hidden="true"></span> </button>   </div> </nav> </header>  <button class="mobile-menu-backdrop" type="button" data-menu-backdrop data-menu-close hidden></button> <aside class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" aria-hidden="true" data-mobile-menu> <div class="mobile-menu-head"> <span>Penghuan Yan</span> <button class="menu-close" type="button" aria-label="Close navigation menu" data-menu-close> <span aria-hidden="true"></span> <span aria-hidden="true"></span> </button> </div> <nav class="mobile-menu-links" aria-label="Mobile navigation"> <a href="#home" data-menu-close>Home</a><a href="#research" data-menu-close>Research</a><a href="#education" data-menu-close>Education</a><a href="/files/penghuan-yan-cv.pdf" data-menu-close>CV</a> </nav> </aside>  <main class="main-content">  <section class="academic-hero" id="home"> <div class="portrait-frame"> <img src="/images/profile-penghuan-yan.jpg" alt="Portrait of Penghuan Yan"> </div> <div class="hero-profile">  <h1>Penghuan Yan</h1> <p class="hero-name-cn"> <span>阎芃寰</span> <span class="name-reading">Yán Pénghuán · [jɛn˧˥.pʰəŋ˧˥.xwan˧˥]</span> </p> <p class="hero-affiliation">University of Pennsylvania</p> <p class="hero-title">Ph.D. Student, Department of Economics</p> <div class="hero-email"> <span>Email</span> <button class="email-copy" type="button" data-copy-email="yanph@sas.upenn.edu" data-copy-done="Copied" data-copy-failed="Copy failed" aria-label="Copy email address: yanph@sas.upenn.edu" title="Copy email address"> <span class="email-text">yanph@sas.upenn.edu</span> <span class="copy-status" aria-live="polite" data-copy-status> Click to copy </span> </button> </div> <div class="markdown-body hero-bio"> <p>I am a first-year Ph.D. student in Economics at the <strong>University of Pennsylvania</strong>. I received my <strong>B.Econ. in Finance (Financial Economics)</strong> and <strong>B.S. in Mathematics</strong> from <strong>Peking University</strong>.</p>
+<p>My research interests lie in <strong>microeconomic theory</strong>, mainly <strong>information economics</strong> and <strong>mechanism design</strong>.</p> </div> <div class="profile-actions" aria-label="Profile links"> <a class="button" href="/files/penghuan-yan-cv.pdf"> CV </a><a class="button secondary" href="mailto:yanph@sas.upenn.edu"> Email </a> </div> </div> </section> <div class="page-divider" aria-hidden="true"></div> <section class="academic-section" id="research"> <h2 class="section-title">Research</h2> <div class="research-groups"> <section class="research-group" aria-labelledby="research-working-paper"> <h3 class="research-group-title" id="research-working-paper"> Working Papers </h3> <div class="paper-list"> <article class="paper-item"> <div class="paper-body"> <h4 class="paper-title"> <span>Coordinating Treatment Allocation and Recommendation</span> <span class="paper-year">(2026)</span> </h4>  <p class="paper-coauthors"> <span>with </span> <a class="paper-coauthor-name" href="https://liguo16.com/">Li Guo</a><span></span>  <span></span> </p>  <p class="paper-status"> <span>Presented at </span><strong>Midwest Theory 2026</strong><span>, </span><strong>PETCO 2026</strong><span>, </span><strong>NASMES 2026</strong><span>; accepted for presentation at </span><strong>ACM EC&#39;26</strong><span>, </span><strong>Stony Brook GT 2026</strong><span>.</span> </p> <div class="paper-links"> <a href="https://arxiv.org/pdf/2606.21120">ArXiv</a> </div> <details class="paper-abstract"> <summary><strong>Abstract</strong></summary> <p>We study a model in which a sender allocates limited treatment to agents with heterogeneous quality and later recommends selected agents to a receiver, seeking to maximize the number of agents accepted by the receiver. All agents value treatment, which improves agents&#39; quality, but treatment must be allocated before the sender observes agents&#39; initial quality; recommendation occurs only after quality is learned. A natural benchmark is to design the two instruments separately: allocate treatment randomly first, and then recommend agents from the top down afterward. Our main result shows that the sender can do strictly better by coordinating treatment allocation with recommendations. In the optimal joint mechanism, treatment is non-monotone in quality: an intermediate group has a lower treatment probability than both higher- and lower-quality agents, but is compensated with a guaranteed recommendation when treatment is realized. We provide an implementation through contracts that induce self-selection and discuss applications to education, industrial policy, and startup incubation. The takeaway is simple: coordinate treatment allocation and recommendation.</p>  </details> </div> </article> </div> </section> </div> </section> <div class="page-divider" aria-hidden="true"></div> <section class="academic-section" id="education"> <h2 class="section-title">Education</h2> <div class="timeline-list"> <article class="timeline-entry"> <div class="timeline-time">Aug. 2025 - Present</div> <div class="timeline-copy"> <h3>University of Pennsylvania</h3> <p class="timeline-program">Ph.D. student in Economics</p> <p class="timeline-location">Philadelphia, PA, USA</p> <div class="markdown-body">  </div> </div> </article><article class="timeline-entry"> <div class="timeline-time">Jan. 2024 - May 2024</div> <div class="timeline-copy"> <h3>University of California, Berkeley</h3> <p class="timeline-program">Visiting student</p> <p class="timeline-location">Berkeley, CA, USA</p> <div class="markdown-body">  </div> </div> </article><article class="timeline-entry"> <div class="timeline-time">Sep. 2021 - Jul. 2025</div> <div class="timeline-copy"> <h3>Peking University, Guanghua School of Management</h3> <p class="timeline-program">B.Econ. in Finance (Financial Economics); B.S. in Mathematics</p> <p class="timeline-location">Beijing, China</p> <div class="markdown-body">  </div> </div> </article> </div> </section> <script type="module">(()=>{const i=async t=>{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(t);return}const e=document.createElement("textarea");e.value=t,e.setAttribute("readonly",""),e.style.position="fixed",e.style.opacity="0",document.body.appendChild(e),e.select(),document.execCommand("copy"),e.remove()},n=()=>{document.querySelectorAll("[data-copy-email]").forEach(t=>{if(!(t instanceof HTMLButtonElement)||t.dataset.copyBound==="true")return;t.dataset.copyBound="true";const e=t.querySelector("[data-copy-status]"),a=e?.textContent??"";let o;t.addEventListener("click",async()=>{const c=t.dataset.copyEmail;if(c){try{await i(c),e&&(e.textContent=t.dataset.copyDone??a)}catch{e&&(e.textContent=t.dataset.copyFailed??a)}o&&window.clearTimeout(o),o=window.setTimeout(()=>{e&&(e.textContent=a)},1800)}})})};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",n,{once:!0}):n()})();</script>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <div class="footer-identity"> <p class="footer-line"> <strong>Penghuan Yan</strong> <span class="footer-separator" aria-hidden="true">·</span> <span>Department of Economics, University of Pennsylvania</span> </p> <p class="footer-line"> <span>yanph@sas.upenn.edu</span>  <span class="footer-separator" aria-hidden="true">·</span> <span>Philadelphia, PA, USA</span>  </p> </div> <p class="footer-meta">
+© 2026 Penghuan Yan · Last updated: June 29, 2026 </p> </div> </footer> </div> </body></html>

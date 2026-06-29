@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="zh-CN" data-layout="simple" data-tool-fullscreen="true"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="创建本地房间，添加随机机器人，选择玩法并开始一场双人花札对战。"><meta name="generator" content="Astro v6.4.2"><meta name="site-version" content="12054834e69eca83f6e524bc5af99f239e51ce1f"><link rel="icon" type="image/png" href="/images/favicon.png?v=12054834e69eca83f6e524bc5af99f239e51ce1f"><link rel="apple-touch-icon" href="/images/favicon.png?v=12054834e69eca83f6e524bc5af99f239e51ce1f"><title>花札 - Egamad</title><script>
+      (() => {
+        const root = document.documentElement;
+        root.dataset.headerBooting = "true";
+
+        const clearHeaderBooting = () => {
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+              delete root.dataset.headerBooting;
+            });
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", clearHeaderBooting, { once: true });
+        } else {
+          clearHeaderBooting();
+        }
+      })();
+    </script><script>(function(){const darkLabel = "切换到深色模式";
+const lightLabel = "切换到浅色模式";
+
+      (() => {
+        const storageKey = "site-theme";
+        const root = document.documentElement;
+
+        const getStoredTheme = () => {
+          try {
+            return localStorage.getItem(storageKey);
+          } catch {
+            return null;
+          }
+        };
+
+        const setStoredTheme = (theme) => {
+          try {
+            localStorage.setItem(storageKey, theme);
+          } catch {}
+        };
+
+        let themeTransitionReset = 0;
+
+        const withoutThemeTransition = (callback) => {
+          root.dataset.themeChanging = "true";
+          callback();
+          window.cancelAnimationFrame(themeTransitionReset);
+          themeTransitionReset = window.requestAnimationFrame(() => {
+            themeTransitionReset = window.requestAnimationFrame(() => {
+              delete root.dataset.themeChanging;
+            });
+          });
+        };
+
+        const applyTheme = (theme, options = {}) => {
+          const nextTheme = theme === "dark" ? "dark" : "light";
+          const commitTheme = () => {
+            root.dataset.theme = nextTheme;
+
+            document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+              const isDark = nextTheme === "dark";
+              button.setAttribute("aria-pressed", String(isDark));
+              button.setAttribute("aria-label", isDark ? lightLabel : darkLabel);
+            });
+          };
+
+          if (options.instant) {
+            withoutThemeTransition(commitTheme);
+          } else {
+            commitTheme();
+          }
+        };
+
+        applyTheme(getStoredTheme() ?? "light");
+
+        const bindThemeToggle = () => {
+          applyTheme(getStoredTheme() ?? root.dataset.theme ?? "light");
+          document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+            button.addEventListener("click", () => {
+              const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+              setStoredTheme(nextTheme);
+              applyTheme(nextTheme, { instant: true });
+            });
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", bindThemeToggle, { once: true });
+        } else {
+          bindThemeToggle();
+        }
+      })();
+    })();</script><script>
+      (() => {
+        const root = document.documentElement;
+
+        const setMenuOpen = (open) => {
+          root.dataset.menuOpen = open ? "true" : "false";
+          document.body.style.overflow = open ? "hidden" : "";
+
+          document.querySelectorAll("[data-menu-toggle]").forEach((button) => {
+            button.setAttribute("aria-expanded", String(open));
+          });
+
+          document.querySelectorAll("[data-mobile-menu]").forEach((menu) => {
+            menu.setAttribute("aria-hidden", String(!open));
+          });
+
+          document.querySelectorAll("[data-menu-backdrop]").forEach((backdrop) => {
+            backdrop.hidden = !open;
+          });
+        };
+
+        const bindMenu = () => {
+          setMenuOpen(false);
+
+          document.querySelectorAll("[data-menu-toggle]").forEach((button) => {
+            button.addEventListener("click", () => {
+              setMenuOpen(root.dataset.menuOpen !== "true");
+            });
+          });
+
+          document.querySelectorAll("[data-menu-close]").forEach((item) => {
+            item.addEventListener("click", () => setMenuOpen(false));
+          });
+
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") setMenuOpen(false);
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", bindMenu, { once: true });
+        } else {
+          bindMenu();
+        }
+      })();
+    </script><script>(function(){const siteVersion = "12054834e69eca83f6e524bc5af99f239e51ce1f";
+
+      (() => {
+        if (siteVersion === "local-dev") return;
+
+        const versionUrl = `/site-version.json?ts=${Date.now()}`;
+
+        fetch(versionUrl, { cache: "no-store" })
+          .then((response) => (response.ok ? response.json() : null))
+          .then((data) => {
+            const latest = data && data.version;
+            if (!latest || latest === siteVersion) return;
+
+            const reloadKey = `site-version-reload:${latest}`;
+            if (sessionStorage.getItem(reloadKey)) return;
+
+            sessionStorage.setItem(reloadKey, "1");
+            const nextUrl = new URL(window.location.href);
+            nextUrl.searchParams.set("v", String(latest).slice(0, 12));
+            window.location.replace(nextUrl.toString());
+          })
+          .catch(() => {});
+      })();
+    })();</script><script>
+      (() => {
+        const formatUpdatedTime = () => {
+          const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+          document.querySelectorAll("[data-build-timestamp]").forEach((node) => {
+            const timestamp = node.getAttribute("data-build-timestamp");
+            if (!timestamp) return;
+
+            const date = new Date(timestamp);
+            const pageLocale = document.documentElement.lang?.toLowerCase().startsWith("zh") ? "zh-CN" : "en-US";
+            const timeZone = browserTimeZone || "Asia/Shanghai";
+
+            try {
+              const dateTime = new Intl.DateTimeFormat(pageLocale, {
+                timeZone,
+                year: "numeric",
+                month: pageLocale === "zh-CN" ? "numeric" : "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+              }).format(date);
+              const zoneName = new Intl.DateTimeFormat("en-US", {
+                timeZone,
+                timeZoneName: "short",
+              }).formatToParts(date).find((part) => part.type === "timeZoneName")?.value;
+
+              node.textContent = zoneName ? `${dateTime} ${zoneName}` : dateTime;
+            } catch {}
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", formatUpdatedTime, { once: true });
+        } else {
+          formatUpdatedTime();
+        }
+      })();
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DNlfDnOT.css">
+<link rel="stylesheet" href="/_astro/index.BR49_Bkd.css"></head> <body> <div class="site-shell"> <header class="site-header"> <nav class="site-nav" aria-label="Primary navigation">  <span class="tool-header-leading-slot" data-tool-header-leading data-empty="true">  </span> <a class="brand" href="/tools/hanafuda/"> <span>花札</span> </a>  <div class="site-controls" aria-label="站点控制"> <span class="tool-header-actions-slot" data-tool-header-actions data-empty="true">   </span>  <button class="theme-toggle" type="button" aria-label="切换深色模式" aria-pressed="false" data-theme-toggle> <span class="theme-icon" aria-hidden="true"></span> </button>   </div> </nav> </header>  <main class="main-content">   <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(c,s,d)=>s in c?g(c,s,{enumerable:!0,configurable:!0,writable:!0,value:d}):c[s]=d;var l=(c,s,d)=>w(c,typeof s!="symbol"?s+"":s,d);var E=new Set(["__proto__","constructor","prototype"]);{let c={0:t=>y(t),1:t=>d(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(d(t)),5:t=>new Set(d(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in c?c[p](e):void 0},d=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let n=this.querySelectorAll("astro-slot"),r={},i=this.querySelectorAll("template[data-astro-template]");for(let o of i){let a=o.closest(this.tagName);a!=null&&a.isSameNode(this)&&(r[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of n){let a=o.closest(this.tagName);a!=null&&a.isSameNode(this)&&(r[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let a=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(a+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${a}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,r,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),n.disconnect(),this.childrenConnectedCallback()},n=new MutationObserver(()=>{var r;((r=this.lastChild)==null?void 0:r.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});n.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let n=new URL(e,document.baseURI),r=`astro-retry=${Date.now()}`,i=n.hash.replace(/^#/,"");return n.hash=i?`${i}&${r}`:r,n.toString()}async importWithRetry(e){try{return await import(e)}catch(n){return await new Promise(r=>setTimeout(r,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let n=this.getAttribute("component-url"),r=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:n}});this.dispatchEvent(r)&&console.error(`[astro-island] Error hydrating ${n}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),n=this.getAttribute("client");if(Astro[n]===void 0){window.addEventListener(`astro:${n}`,()=>this.start(),{once:!0});return}try{await Astro[n](async()=>{let r=this.getAttribute("renderer-url");try{let[i,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),r?this.importWithRetry(r):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=i;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=i[h]}return this.hydrator=u,this.hydrate}catch(i){return this.handleHydrationError(i),()=>{}}},e,this)}catch(r){this.handleHydrationError(r)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="2cUDK" prefix="r1" component-url="/_astro/HanafudaApp.BKoJMZq0.js" component-export="default" renderer-url="/_astro/client.DvDoVHDI.js" props="{}" ssr client="load" opts="{&quot;name&quot;:&quot;HanafudaApp&quot;,&quot;value&quot;:true}" await-children><main class="hf-app" data-table-cloth="classic" data-card-face="labeled" aria-label="花札"><div class="hf-asset-preload" role="status" aria-live="polite" aria-label="资源加载 0%"><span>资源 0/51</span><strong>0<!-- -->%</strong><i style="--hf-asset-preload-progress:0%" aria-hidden="true"></i></div><section class="hf-lobby hf-lobby-entry"><button type="button" class="hf-settings-gear" aria-label="设置" title="设置"><img class="hf-gear-icon" src="data:image/svg+xml,%3csvg%20xmlns=&#x27;http://www.w3.org/2000/svg&#x27;%20viewBox=&#x27;0%200%2024%2024&#x27;%20role=&#x27;img&#x27;%20aria-label=&#x27;Settings&#x27;%3e%3c!--%20Material%20Icons%20settings%20glyph,%20Apache%20License%202.0.%20--%3e%3cpath%20fill=&#x27;%23fffdf7&#x27;%20d=&#x27;M19.43%2012.98c.04-.32.07-.65.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.38-.31-.6-.22l-2.49%201c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46%202.18%2014.25%202%2014%202h-4c-.25%200-.46.18-.5.42l-.38%202.65c-.61.25-1.18.59-1.69.98l-2.49-1c-.23-.08-.48%200-.6.22l-2%203.46c-.13.22-.08.49.12.64l2.11%201.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11%201.65c-.19.15-.24.42-.12.64l2%203.46c.12.22.38.31.6.22l2.49-1c.52.4%201.08.73%201.69.98l.38%202.65c.04.24.25.42.5.42h4c.25%200%20.46-.18.5-.42l.38-2.65c.61-.25%201.18-.59%201.69-.98l2.49%201c.23.08.48%200%20.6-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12%2015.5A3.5%203.5%200%201%201%2012%208a3.5%203.5%200%200%201%200%207.5z&#x27;/%3e%3c/svg%3e" alt="" aria-hidden="true"/></button><div class="hf-lobby-main hf-entry-main"><div class="hf-title-block"><p class="hf-kicker">Hanafuda</p><h1>花札</h1></div><div class="hf-entry-stack"><div class="hf-room-panel hf-entry-panel"><div class="hf-panel-head"><h2>创建房间</h2><span>こいこい</span></div><div class="hf-rule-set" role="group" aria-label="房间玩法"><span>玩法</span><button type="button" class="selected" title="两席对战，役成立后选择胜负或こいこい。">こいこい</button></div><section class="hf-rules-panel"><div class="hf-panel-head"><h2>规则</h2><span>1<!-- --> 回战</span></div><div class="hf-round-selector" role="group" aria-label="回战数"><button type="button" class="selected">1</button><button type="button" class="">3</button><button type="button" class="">6</button><button type="button" class="">12</button></div><div class="hf-rule-grid"><button type="button" class="hf-rule-toggle selected" aria-pressed="true" data-checked="true"><span>花見/月見</span></button><button type="button" class="hf-rule-toggle selected" aria-pressed="true" data-checked="true"><span>菊盃计粕</span></button><button type="button" class="hf-rule-toggle selected" aria-pressed="true" data-checked="true"><span>起手役</span></button><button type="button" class="hf-rule-toggle selected" aria-pressed="true" data-checked="true"><span>7点翻倍</span></button><button type="button" class="hf-rule-toggle selected" aria-pressed="true" data-checked="true"><span>こい返</span></button><button type="button" class="hf-rule-toggle" aria-pressed="false" data-checked="false"><span>亲权流局</span></button></div></section><button type="button" class="hf-primary hf-start-button">创建房间</button></div><div class="hf-room-panel hf-entry-panel"><div class="hf-panel-head"><h2>加入房间</h2><span>本地占位</span></div><div class="hf-join-row"><input aria-label="房间号" placeholder="房间号" value=""/><button type="button" class="hf-primary">加入房间</button></div><p class="hf-notice" aria-live="polite"> </p></div></div></div></section></main><!--astro:end--></astro-island> <script>
+    (() => {
+      const valid = {
+        tableCloth: new Set(["classic", "deep", "indigo"]),
+        cardFace: new Set(["labeled", "clean"]),
+      };
+
+      try {
+        const raw = window.localStorage.getItem("hanafuda:display-settings");
+        if (!raw) return;
+        const settings = JSON.parse(raw);
+        document.querySelectorAll(".hf-app").forEach((element) => {
+          if (valid.tableCloth.has(settings.tableCloth)) element.dataset.tableCloth = settings.tableCloth;
+          if (valid.cardFace.has(settings.cardFace)) element.dataset.cardFace = settings.cardFace;
+        });
+      } catch {
+        // Keep the SSR defaults when local settings are unavailable or invalid.
+      }
+    })();
+  </script>   </main> <footer class="site-footer site-footer-meta-only"> <div class="site-footer-inner">  <p class="footer-meta">
+© 2026 Egamad · 最后更新: <span data-build-timestamp="2026-06-29T13:16:32.339Z">2026/6/29 21:16:32 GMT+8</span> </p> </div> </footer> </div> </body></html>

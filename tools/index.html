@@ -1,0 +1,341 @@
+<!DOCTYPE html><html lang="zh-CN" data-layout="simple"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Egamad 的网页工具箱。"><meta name="generator" content="Astro v6.4.2"><meta name="site-version" content="12054834e69eca83f6e524bc5af99f239e51ce1f"><link rel="icon" type="image/png" href="/images/favicon.png?v=12054834e69eca83f6e524bc5af99f239e51ce1f"><link rel="apple-touch-icon" href="/images/favicon.png?v=12054834e69eca83f6e524bc5af99f239e51ce1f"><title>工具箱 - Egamad</title><script>
+      (() => {
+        const root = document.documentElement;
+        root.dataset.headerBooting = "true";
+
+        const clearHeaderBooting = () => {
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+              delete root.dataset.headerBooting;
+            });
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", clearHeaderBooting, { once: true });
+        } else {
+          clearHeaderBooting();
+        }
+      })();
+    </script><script>(function(){const darkLabel = "切换到深色模式";
+const lightLabel = "切换到浅色模式";
+
+      (() => {
+        const storageKey = "site-theme";
+        const root = document.documentElement;
+
+        const getStoredTheme = () => {
+          try {
+            return localStorage.getItem(storageKey);
+          } catch {
+            return null;
+          }
+        };
+
+        const setStoredTheme = (theme) => {
+          try {
+            localStorage.setItem(storageKey, theme);
+          } catch {}
+        };
+
+        let themeTransitionReset = 0;
+
+        const withoutThemeTransition = (callback) => {
+          root.dataset.themeChanging = "true";
+          callback();
+          window.cancelAnimationFrame(themeTransitionReset);
+          themeTransitionReset = window.requestAnimationFrame(() => {
+            themeTransitionReset = window.requestAnimationFrame(() => {
+              delete root.dataset.themeChanging;
+            });
+          });
+        };
+
+        const applyTheme = (theme, options = {}) => {
+          const nextTheme = theme === "dark" ? "dark" : "light";
+          const commitTheme = () => {
+            root.dataset.theme = nextTheme;
+
+            document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+              const isDark = nextTheme === "dark";
+              button.setAttribute("aria-pressed", String(isDark));
+              button.setAttribute("aria-label", isDark ? lightLabel : darkLabel);
+            });
+          };
+
+          if (options.instant) {
+            withoutThemeTransition(commitTheme);
+          } else {
+            commitTheme();
+          }
+        };
+
+        applyTheme(getStoredTheme() ?? "light");
+
+        const bindThemeToggle = () => {
+          applyTheme(getStoredTheme() ?? root.dataset.theme ?? "light");
+          document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+            button.addEventListener("click", () => {
+              const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+              setStoredTheme(nextTheme);
+              applyTheme(nextTheme, { instant: true });
+            });
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", bindThemeToggle, { once: true });
+        } else {
+          bindThemeToggle();
+        }
+      })();
+    })();</script><script>
+      (() => {
+        const root = document.documentElement;
+
+        const setMenuOpen = (open) => {
+          root.dataset.menuOpen = open ? "true" : "false";
+          document.body.style.overflow = open ? "hidden" : "";
+
+          document.querySelectorAll("[data-menu-toggle]").forEach((button) => {
+            button.setAttribute("aria-expanded", String(open));
+          });
+
+          document.querySelectorAll("[data-mobile-menu]").forEach((menu) => {
+            menu.setAttribute("aria-hidden", String(!open));
+          });
+
+          document.querySelectorAll("[data-menu-backdrop]").forEach((backdrop) => {
+            backdrop.hidden = !open;
+          });
+        };
+
+        const bindMenu = () => {
+          setMenuOpen(false);
+
+          document.querySelectorAll("[data-menu-toggle]").forEach((button) => {
+            button.addEventListener("click", () => {
+              setMenuOpen(root.dataset.menuOpen !== "true");
+            });
+          });
+
+          document.querySelectorAll("[data-menu-close]").forEach((item) => {
+            item.addEventListener("click", () => setMenuOpen(false));
+          });
+
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") setMenuOpen(false);
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", bindMenu, { once: true });
+        } else {
+          bindMenu();
+        }
+      })();
+    </script><script>(function(){const siteVersion = "12054834e69eca83f6e524bc5af99f239e51ce1f";
+
+      (() => {
+        if (siteVersion === "local-dev") return;
+
+        const versionUrl = `/site-version.json?ts=${Date.now()}`;
+
+        fetch(versionUrl, { cache: "no-store" })
+          .then((response) => (response.ok ? response.json() : null))
+          .then((data) => {
+            const latest = data && data.version;
+            if (!latest || latest === siteVersion) return;
+
+            const reloadKey = `site-version-reload:${latest}`;
+            if (sessionStorage.getItem(reloadKey)) return;
+
+            sessionStorage.setItem(reloadKey, "1");
+            const nextUrl = new URL(window.location.href);
+            nextUrl.searchParams.set("v", String(latest).slice(0, 12));
+            window.location.replace(nextUrl.toString());
+          })
+          .catch(() => {});
+      })();
+    })();</script><script>
+      (() => {
+        const formatUpdatedTime = () => {
+          const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+          document.querySelectorAll("[data-build-timestamp]").forEach((node) => {
+            const timestamp = node.getAttribute("data-build-timestamp");
+            if (!timestamp) return;
+
+            const date = new Date(timestamp);
+            const pageLocale = document.documentElement.lang?.toLowerCase().startsWith("zh") ? "zh-CN" : "en-US";
+            const timeZone = browserTimeZone || "Asia/Shanghai";
+
+            try {
+              const dateTime = new Intl.DateTimeFormat(pageLocale, {
+                timeZone,
+                year: "numeric",
+                month: pageLocale === "zh-CN" ? "numeric" : "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+              }).format(date);
+              const zoneName = new Intl.DateTimeFormat("en-US", {
+                timeZone,
+                timeZoneName: "short",
+              }).formatToParts(date).find((part) => part.type === "timeZoneName")?.value;
+
+              node.textContent = zoneName ? `${dateTime} ${zoneName}` : dateTime;
+            } catch {}
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", formatUpdatedTime, { once: true });
+        } else {
+          formatUpdatedTime();
+        }
+      })();
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DNlfDnOT.css"></head> <body> <div class="site-shell"> <header class="site-header"> <nav class="site-nav" aria-label="Primary navigation">  <span class="tool-header-leading-slot" data-tool-header-leading data-empty="true">  </span> <a class="brand" href="/tools/"> <span>工具箱</span> </a>  <div class="site-controls" aria-label="站点控制"> <span class="tool-header-actions-slot" data-tool-header-actions data-empty="true">   </span>  <button class="theme-toggle" type="button" aria-label="切换深色模式" aria-pressed="false" data-theme-toggle> <span class="theme-icon" aria-hidden="true"></span> </button>   </div> </nav> </header>  <main class="main-content">  <section class="toolbox-page"> <div class="toolbox-hero"> <p class="toolbox-kicker">Toolbox</p> <h1>工具箱</h1>  </div> <div class="toolbox-categories"> <section class="toolbox-category" aria-labelledby="category-tools" data-tool-category> <div class="toolbox-category-head"> <div class="toolbox-category-title"> <h2 id="category-tools">工具</h2>  </div>  </div> <div class="tool-card-grid" data-tool-card-grid> <a class="tool-card" href="/tools/xuan-shu/" data-tool-card data-order="1" data-title="玄枢" data-created-time="1780295400000" data-updated-time="1781360958000"> <div class="tool-card-main"> <div class="tool-card-icon" aria-hidden="true"> <span>玄</span> </div> <div class="tool-card-copy"> <h3>玄枢</h3> <p>支持记录管理、元素批注以及个性化设置的四柱和六爻排盘工具。</p> </div> </div> <div class="tool-tags" aria-label="标签"> <span>四柱</span><span>六爻</span> </div> </a> </div> </section><section class="toolbox-category" aria-labelledby="category-games" data-tool-category> <div class="toolbox-category-head"> <div class="toolbox-category-title"> <h2 id="category-games">游戏</h2>  </div>  </div> <div class="tool-card-grid" data-tool-card-grid> <a class="tool-card" href="/tools/hanafuda/" data-tool-card data-order="1" data-title="花札" data-created-time="1781971200000" data-updated-time="1782737571000"> <div class="tool-card-main"> <div class="tool-card-icon" aria-hidden="true"> <img src="/_astro/icon.hpsP1I4V.svg" alt=""> </div> <div class="tool-card-copy"> <h3>花札</h3> <p>创建本地房间，添加随机机器人，选择玩法并开始一场双人花札对战。</p> </div> </div> <div class="tool-tags" aria-label="标签"> <span>花札</span><span>房间</span><span>游戏</span> </div> </a> </div> </section> </div> </section> <script>
+    (() => {
+      const compareTitles = (first, second) =>
+        first.localeCompare(second, "zh-CN", {
+          numeric: true,
+          sensitivity: "base",
+        });
+
+      const sortControls = Array.from(document.querySelectorAll("[data-tool-sort-control]"));
+      const closeToolSortMenus = (except) => {
+        sortControls.forEach((control) => {
+          if (control === except) return;
+          const toggle = control.querySelector("[data-tool-sort-toggle]");
+          const menu = control.querySelector("[data-tool-sort-menu]");
+          if (!(toggle instanceof HTMLButtonElement) || !(menu instanceof HTMLElement)) return;
+          menu.hidden = true;
+          toggle.setAttribute("aria-expanded", "false");
+        });
+      };
+
+      document.querySelectorAll("[data-tool-category]").forEach((category) => {
+        const grid = category.querySelector("[data-tool-card-grid]");
+        const sortControl = category.querySelector("[data-tool-sort-control]");
+        const sortToggle = sortControl?.querySelector("[data-tool-sort-toggle]");
+        const sortMenu = sortControl?.querySelector("[data-tool-sort-menu]");
+        const sortValue = sortControl?.querySelector("[data-tool-sort-value]");
+        const sortOptions = Array.from(sortControl?.querySelectorAll("[data-tool-sort-option]") ?? []);
+
+        if (
+          !(sortControl instanceof HTMLElement) ||
+          !(sortToggle instanceof HTMLButtonElement) ||
+          !(sortMenu instanceof HTMLElement) ||
+          !(sortValue instanceof HTMLElement)
+        ) {
+          return;
+        }
+
+        const getCards = () => Array.from(grid?.querySelectorAll("[data-tool-card]") ?? []);
+
+        const sortCards = (mode) => {
+          if (!grid) return;
+
+          const cards = getCards();
+          if (cards.length < 2) return;
+
+          const firstPositions = new Map(cards.map((card) => [card, card.getBoundingClientRect()]));
+          const sortedCards = [...cards].sort((first, second) => {
+            const firstTitle = first.dataset.title ?? "";
+            const secondTitle = second.dataset.title ?? "";
+            const firstOrder = Number(first.dataset.order ?? 0);
+            const secondOrder = Number(second.dataset.order ?? 0);
+
+            if (mode === "title") {
+              const titleResult = compareTitles(firstTitle, secondTitle);
+              if (titleResult !== 0) return titleResult;
+            }
+
+            if (mode === "created" || mode === "updated") {
+              const key = mode === "created" ? "createdTime" : "updatedTime";
+              const firstTime = Number(first.dataset[key] ?? 0);
+              const secondTime = Number(second.dataset[key] ?? 0);
+              const timeResult = firstTime - secondTime;
+              if (timeResult !== 0) return timeResult;
+            }
+
+            const orderResult = firstOrder - secondOrder;
+            if (orderResult !== 0) return orderResult;
+
+            return compareTitles(firstTitle, secondTitle);
+          });
+
+          sortedCards.forEach((card) => grid.appendChild(card));
+
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+          sortedCards.forEach((card) => {
+            const first = firstPositions.get(card);
+            if (!first) return;
+
+            const last = card.getBoundingClientRect();
+            const deltaX = first.left - last.left;
+            const deltaY = first.top - last.top;
+
+            if (deltaX === 0 && deltaY === 0) return;
+
+            card.animate(
+              [
+                {
+                  transform: `translate(${deltaX}px, ${deltaY}px)`,
+                  opacity: 0.92,
+                },
+                {
+                  transform: "translate(0, 0)",
+                  opacity: 1,
+                },
+              ],
+              {
+                duration: 280,
+                easing: "cubic-bezier(0.2, 0, 0, 1)",
+              },
+            );
+          });
+        };
+
+        sortToggle.addEventListener("click", () => {
+          const shouldOpen = sortMenu.hidden;
+          closeToolSortMenus(sortControl);
+          sortMenu.hidden = !shouldOpen;
+          sortToggle.setAttribute("aria-expanded", String(shouldOpen));
+        });
+
+        sortOptions.forEach((option) => {
+          if (!(option instanceof HTMLButtonElement)) return;
+          option.addEventListener("click", () => {
+            const mode = option.dataset.toolSortOption ?? "order";
+            sortOptions.forEach((item) => {
+              if (!(item instanceof HTMLButtonElement)) return;
+              const selected = item === option;
+              item.classList.toggle("selected", selected);
+              item.setAttribute("aria-checked", String(selected));
+            });
+            sortValue.textContent = option.dataset.label ?? option.textContent ?? "默认";
+            sortCards(mode);
+            closeToolSortMenus();
+          });
+        });
+      });
+
+      document.addEventListener("pointerdown", (event) => {
+        const target = event.target;
+        if (target instanceof Element && target.closest("[data-tool-sort-control]")) return;
+        closeToolSortMenus();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeToolSortMenus();
+      });
+      window.addEventListener("scroll", () => closeToolSortMenus(), true);
+      window.addEventListener("resize", () => closeToolSortMenus());
+      window.addEventListener("dragstart", () => closeToolSortMenus(), true);
+    })();
+  </script>  </main> <footer class="site-footer site-footer-meta-only"> <div class="site-footer-inner">  <p class="footer-meta">
+© 2026 Egamad · 最后更新: <span data-build-timestamp="2026-06-29T13:16:32.339Z">2026/6/29 21:16:32 GMT+8</span> </p> </div> </footer> </div> </body></html>

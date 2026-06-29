@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="zh-CN" data-layout="default"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="我目前就读于宾夕法尼亚大学经济学系，是一名二年级博士生。我本科毕业于北京大学，获得了经济学学士（金融学，金融经济方向）和理学学士（数学）学位。"><meta name="generator" content="Astro v6.4.2"><meta name="site-version" content="12054834e69eca83f6e524bc5af99f239e51ce1f"><link rel="icon" type="image/png" href="/images/favicon.png?v=12054834e69eca83f6e524bc5af99f239e51ce1f"><link rel="apple-touch-icon" href="/images/favicon.png?v=12054834e69eca83f6e524bc5af99f239e51ce1f"><title>阎芃寰 - 经济学系博士生</title><script>
+      (() => {
+        const root = document.documentElement;
+        root.dataset.headerBooting = "true";
+
+        const clearHeaderBooting = () => {
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+              delete root.dataset.headerBooting;
+            });
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", clearHeaderBooting, { once: true });
+        } else {
+          clearHeaderBooting();
+        }
+      })();
+    </script><script>(function(){const darkLabel = "切换到深色模式";
+const lightLabel = "切换到浅色模式";
+
+      (() => {
+        const storageKey = "site-theme";
+        const root = document.documentElement;
+
+        const getStoredTheme = () => {
+          try {
+            return localStorage.getItem(storageKey);
+          } catch {
+            return null;
+          }
+        };
+
+        const setStoredTheme = (theme) => {
+          try {
+            localStorage.setItem(storageKey, theme);
+          } catch {}
+        };
+
+        let themeTransitionReset = 0;
+
+        const withoutThemeTransition = (callback) => {
+          root.dataset.themeChanging = "true";
+          callback();
+          window.cancelAnimationFrame(themeTransitionReset);
+          themeTransitionReset = window.requestAnimationFrame(() => {
+            themeTransitionReset = window.requestAnimationFrame(() => {
+              delete root.dataset.themeChanging;
+            });
+          });
+        };
+
+        const applyTheme = (theme, options = {}) => {
+          const nextTheme = theme === "dark" ? "dark" : "light";
+          const commitTheme = () => {
+            root.dataset.theme = nextTheme;
+
+            document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+              const isDark = nextTheme === "dark";
+              button.setAttribute("aria-pressed", String(isDark));
+              button.setAttribute("aria-label", isDark ? lightLabel : darkLabel);
+            });
+          };
+
+          if (options.instant) {
+            withoutThemeTransition(commitTheme);
+          } else {
+            commitTheme();
+          }
+        };
+
+        applyTheme(getStoredTheme() ?? "light");
+
+        const bindThemeToggle = () => {
+          applyTheme(getStoredTheme() ?? root.dataset.theme ?? "light");
+          document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+            button.addEventListener("click", () => {
+              const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+              setStoredTheme(nextTheme);
+              applyTheme(nextTheme, { instant: true });
+            });
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", bindThemeToggle, { once: true });
+        } else {
+          bindThemeToggle();
+        }
+      })();
+    })();</script><script>
+      (() => {
+        const root = document.documentElement;
+
+        const setMenuOpen = (open) => {
+          root.dataset.menuOpen = open ? "true" : "false";
+          document.body.style.overflow = open ? "hidden" : "";
+
+          document.querySelectorAll("[data-menu-toggle]").forEach((button) => {
+            button.setAttribute("aria-expanded", String(open));
+          });
+
+          document.querySelectorAll("[data-mobile-menu]").forEach((menu) => {
+            menu.setAttribute("aria-hidden", String(!open));
+          });
+
+          document.querySelectorAll("[data-menu-backdrop]").forEach((backdrop) => {
+            backdrop.hidden = !open;
+          });
+        };
+
+        const bindMenu = () => {
+          setMenuOpen(false);
+
+          document.querySelectorAll("[data-menu-toggle]").forEach((button) => {
+            button.addEventListener("click", () => {
+              setMenuOpen(root.dataset.menuOpen !== "true");
+            });
+          });
+
+          document.querySelectorAll("[data-menu-close]").forEach((item) => {
+            item.addEventListener("click", () => setMenuOpen(false));
+          });
+
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") setMenuOpen(false);
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", bindMenu, { once: true });
+        } else {
+          bindMenu();
+        }
+      })();
+    </script><script>(function(){const siteVersion = "12054834e69eca83f6e524bc5af99f239e51ce1f";
+
+      (() => {
+        if (siteVersion === "local-dev") return;
+
+        const versionUrl = `/site-version.json?ts=${Date.now()}`;
+
+        fetch(versionUrl, { cache: "no-store" })
+          .then((response) => (response.ok ? response.json() : null))
+          .then((data) => {
+            const latest = data && data.version;
+            if (!latest || latest === siteVersion) return;
+
+            const reloadKey = `site-version-reload:${latest}`;
+            if (sessionStorage.getItem(reloadKey)) return;
+
+            sessionStorage.setItem(reloadKey, "1");
+            const nextUrl = new URL(window.location.href);
+            nextUrl.searchParams.set("v", String(latest).slice(0, 12));
+            window.location.replace(nextUrl.toString());
+          })
+          .catch(() => {});
+      })();
+    })();</script><script>
+      (() => {
+        const formatUpdatedTime = () => {
+          const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+          document.querySelectorAll("[data-build-timestamp]").forEach((node) => {
+            const timestamp = node.getAttribute("data-build-timestamp");
+            if (!timestamp) return;
+
+            const date = new Date(timestamp);
+            const pageLocale = document.documentElement.lang?.toLowerCase().startsWith("zh") ? "zh-CN" : "en-US";
+            const timeZone = browserTimeZone || "Asia/Shanghai";
+
+            try {
+              const dateTime = new Intl.DateTimeFormat(pageLocale, {
+                timeZone,
+                year: "numeric",
+                month: pageLocale === "zh-CN" ? "numeric" : "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+              }).format(date);
+              const zoneName = new Intl.DateTimeFormat("en-US", {
+                timeZone,
+                timeZoneName: "short",
+              }).formatToParts(date).find((part) => part.type === "timeZoneName")?.value;
+
+              node.textContent = zoneName ? `${dateTime} ${zoneName}` : dateTime;
+            } catch {}
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", formatUpdatedTime, { once: true });
+        } else {
+          formatUpdatedTime();
+        }
+      })();
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DNlfDnOT.css"></head> <body> <div class="site-shell"> <header class="site-header"> <nav class="site-nav" aria-label="Primary navigation"> <button class="menu-toggle" type="button" aria-label="打开导航菜单" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle> <span aria-hidden="true"></span> <span aria-hidden="true"></span> <span aria-hidden="true"></span> </button> <span class="tool-header-leading-slot" data-tool-header-leading data-empty="true">  </span> <a class="brand" href="#home"> <span>阎芃寰</span> </a> <div class="nav-links"><a href="#home">首页</a><a href="#research">研究</a><a href="#education">教育</a><a href="/files/penghuan-yan-cv.pdf">简历</a></div> <div class="site-controls" aria-label="站点控制"> <span class="tool-header-actions-slot" data-tool-header-actions data-empty="true">   </span> <a class="nav-action" href="/" aria-label="切换到英文"> <span aria-hidden="true">En</span> </a> <button class="theme-toggle" type="button" aria-label="切换深色模式" aria-pressed="false" data-theme-toggle> <span class="theme-icon" aria-hidden="true"></span> </button>   </div> </nav> </header>  <button class="mobile-menu-backdrop" type="button" data-menu-backdrop data-menu-close hidden></button> <aside class="mobile-menu" id="mobile-menu" aria-label="移动端导航" aria-hidden="true" data-mobile-menu> <div class="mobile-menu-head"> <span>阎芃寰</span> <button class="menu-close" type="button" aria-label="关闭导航菜单" data-menu-close> <span aria-hidden="true"></span> <span aria-hidden="true"></span> </button> </div> <nav class="mobile-menu-links" aria-label="移动端导航"> <a href="#home" data-menu-close>首页</a><a href="#research" data-menu-close>研究</a><a href="#education" data-menu-close>教育</a><a href="/files/penghuan-yan-cv.pdf" data-menu-close>简历</a> </nav> </aside>  <main class="main-content">  <section class="academic-hero" id="home"> <div class="portrait-frame"> <img src="/images/profile-penghuan-yan.jpg" alt="阎芃寰的照片"> </div> <div class="hero-profile">  <h1>阎芃寰</h1> <p class="hero-name-cn reading-only"> <span class="name-reading">Yán Pénghuán</span> </p> <p class="hero-affiliation">宾夕法尼亚大学</p> <p class="hero-title">经济学系博士生</p> <div class="hero-email"> <span>邮箱</span> <button class="email-copy" type="button" data-copy-email="yanph@sas.upenn.edu" data-copy-done="已复制" data-copy-failed="复制失败" aria-label="复制邮箱地址: yanph@sas.upenn.edu" title="复制邮箱地址"> <span class="email-text">yanph@sas.upenn.edu</span> <span class="copy-status" aria-live="polite" data-copy-status> 点击复制 </span> </button> </div> <div class="markdown-body hero-bio"> <p>我目前就读于<strong>宾夕法尼亚大学</strong>经济学系，是一名二年级博士生。我本科毕业于<strong>北京大学</strong>，获得了<strong>经济学学士（金融学，金融经济方向）</strong>和<strong>理学学士（数学）</strong>学位。</p>
+<p>我的研究兴趣为<strong>微观经济理论</strong>，主要包括<strong>信息经济学</strong>和<strong>机制设计</strong>。</p> </div> <div class="profile-actions" aria-label="Profile links"> <a class="button" href="/files/penghuan-yan-cv.pdf"> 简历 </a><a class="button secondary" href="mailto:yanph@sas.upenn.edu"> 电子邮件 </a> </div> </div> </section> <div class="page-divider" aria-hidden="true"></div> <section class="academic-section" id="research"> <h2 class="section-title">研究</h2> <div class="research-groups"> <section class="research-group" aria-labelledby="research-working-paper"> <h3 class="research-group-title" id="research-working-paper"> 工作论文 </h3> <div class="paper-list"> <article class="paper-item"> <div class="paper-body"> <h4 class="paper-title"> <span>Coordinating Treatment Allocation and Recommendation</span> <span class="paper-year">(2026)</span> </h4> <p class="paper-title-translation">干预配置与推荐的协调</p> <p class="paper-coauthors paper-coauthors-plain"> <span>与</span> <a class="paper-coauthor-name" href="https://liguo16.com/">郭力</a><span></span>  <span>合作</span> </p>  <p class="paper-status"> <span>已在</span><strong>Midwest Theory 2026</strong><span>、</span><strong>PETCO 2026</strong><span>和</span><strong>NASMES 2026</strong><span>上做会议报告；被</span><strong>ACM EC&#39;26</strong><span>和</span><strong>Stony Brook GT 2026</strong><span>接收为会议报告．</span> </p> <div class="paper-links"> <a href="https://arxiv.org/pdf/2606.21120">ArXiv</a> </div> <details class="paper-abstract"> <summary><strong>摘要</strong></summary> <p>We study a model in which a sender allocates limited treatment to agents with heterogeneous quality and later recommends selected agents to a receiver, seeking to maximize the number of agents accepted by the receiver. All agents value treatment, which improves agents&#39; quality, but treatment must be allocated before the sender observes agents&#39; initial quality; recommendation occurs only after quality is learned. A natural benchmark is to design the two instruments separately: allocate treatment randomly first, and then recommend agents from the top down afterward. Our main result shows that the sender can do strictly better by coordinating treatment allocation with recommendations. In the optimal joint mechanism, treatment is non-monotone in quality: an intermediate group has a lower treatment probability than both higher- and lower-quality agents, but is compensated with a guaranteed recommendation when treatment is realized. We provide an implementation through contracts that induce self-selection and discuss applications to education, industrial policy, and startup incubation. The takeaway is simple: coordinate treatment allocation and recommendation.</p>  <p class="paper-abstract-translation-label"><strong>摘要译文</strong></p> <p>我们研究了一个模型：发送者将有限的干预配额分配给质量可能各不相同的个体，并随后向接收者推荐被选中的个体，目标是最大化被接收者接受的个体数量。所有个体都希望获得干预，因为干预可以提高个体的质量；但是，干预必须在发送者观察到个体的初始质量之前完成分配，而推荐只有在质量被获知之后才会发生。一个自然的基准做法是分别设计这两种手段：先随机分配干预，然后再从高质量到低质量依次推荐个体。我们的主要结果表明，发送者可以通过协调干预分配与推荐而取得严格更好的结果。在最优联合机制中，干预分配关于质量是非单调的：一个中间质量群体获得干预的概率低于高质量和低质量个体，但作为补偿，当他们获得干预时，会百分之百被推荐。我们为这一机制给出了一种通过合约诱导自选择的实施方式，并讨论了其在教育、产业政策和创业孵化中的应用。本文的核心启示很简单：应当协调干预分配与推荐。</p>  </details> </div> </article> </div> </section> </div> </section> <div class="page-divider" aria-hidden="true"></div> <section class="academic-section" id="education"> <h2 class="section-title">教育经历</h2> <div class="timeline-list"> <article class="timeline-entry"> <div class="timeline-time">2025 年 8 月 至今</div> <div class="timeline-copy"> <h3>宾夕法尼亚大学</h3> <p class="timeline-program">经济学博士生</p> <p class="timeline-location">美国宾夕法尼亚州费城</p> <div class="markdown-body">  </div> </div> </article><article class="timeline-entry"> <div class="timeline-time">2024 年 1 月 - 2024 年 5 月</div> <div class="timeline-copy"> <h3>加州大学伯克利分校</h3> <p class="timeline-program">访问学生</p> <p class="timeline-location">美国加利福尼亚州伯克利</p> <div class="markdown-body">  </div> </div> </article><article class="timeline-entry"> <div class="timeline-time">2021 年 9 月 - 2025 年 7 月</div> <div class="timeline-copy"> <h3>北京大学，光华管理学院</h3> <p class="timeline-program">经济学学士（金融学，金融经济方向）；理学学士（数学）</p>  <div class="markdown-body">  </div> </div> </article> </div> </section> <script type="module">(()=>{const i=async t=>{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(t);return}const e=document.createElement("textarea");e.value=t,e.setAttribute("readonly",""),e.style.position="fixed",e.style.opacity="0",document.body.appendChild(e),e.select(),document.execCommand("copy"),e.remove()},n=()=>{document.querySelectorAll("[data-copy-email]").forEach(t=>{if(!(t instanceof HTMLButtonElement)||t.dataset.copyBound==="true")return;t.dataset.copyBound="true";const e=t.querySelector("[data-copy-status]"),a=e?.textContent??"";let o;t.addEventListener("click",async()=>{const c=t.dataset.copyEmail;if(c){try{await i(c),e&&(e.textContent=t.dataset.copyDone??a)}catch{e&&(e.textContent=t.dataset.copyFailed??a)}o&&window.clearTimeout(o),o=window.setTimeout(()=>{e&&(e.textContent=a)},1800)}})})};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",n,{once:!0}):n()})();</script>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <div class="footer-identity"> <p class="footer-line"> <strong>阎芃寰</strong> <span class="footer-separator" aria-hidden="true">·</span> <span>宾夕法尼亚大学经济学系</span> </p> <p class="footer-line"> <span>yanph@sas.upenn.edu</span>  <span class="footer-separator" aria-hidden="true">·</span> <span>美国宾夕法尼亚州费城</span>  </p> </div> <p class="footer-meta">
+© 2026 阎芃寰 · 最后更新: <span data-build-timestamp="2026-06-29T13:16:32.339Z">2026/6/29 21:16:32 GMT+8</span> </p> </div> </footer> </div> </body></html>
